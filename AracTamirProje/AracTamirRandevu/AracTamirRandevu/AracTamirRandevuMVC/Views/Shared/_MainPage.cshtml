@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+<div id="customCarousel1" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="container ">
+                <div class="row">
+                    <div class="col-md-10 mx-auto">
+                         @if (ViewBag.GirisBilgisi != null && ViewBag.GirisBilgisi)
+                        {
+                                 <div class="detail-box text-center">
+                                <h1>
+                                   SİTEYE HOŞGELDİN @Accessor?.HttpContext?.Session.GetString("KullaniciAdi")
+                                </h1>
+                                </div>
+                        }
+                        else{
+                        <div class="detail-box">
+                            <h1>
+                                ARAÇ TAMİR <br>
+                                RANDEVUSU İÇİN GİRİŞ YAPIN<br>
+                                HESABINIZ YOKSA KAYIT OLUN
+                            </h1>
+                            <div class="btn-box">
+                                <a href="/Giris/Index" class="btn1">
+                                    Giriş Yap
+                                </a>
+                                <a href="/Giris/KayitOl" class="btn2">
+                                    Kayıt Ol
+                                </a>
+
+                            </div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+    </div>
+</div>

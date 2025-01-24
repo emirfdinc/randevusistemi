@@ -1,0 +1,70 @@
+﻿@{
+    Layout = "_SecondLayout";
+}
+
+@model IEnumerable<Randevu>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+
+<section class="client_section layout_padding">
+    <div class="container">
+        <div class="heading_container heading_center">
+            <h2>RANDEVULARIM</h2>
+        </div>
+    </div>
+
+     @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="container">
+            <div class="alert alert-light text-center" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        </div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="container">
+            <div class="alert alert-info text-center" role="alert">
+                Kullanıcıya ait onaylanmış randevu veya randevu bulunamadı!
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="container">
+            <div class="row">
+                @foreach (var randevu in Model)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="box">
+                            <div class="img-box">
+                                <img src="~/template/images/admin.png" alt="">
+                            </div>
+                            <div class="detail-box mt-4">
+                                <div class="client_info">
+                                    <div class="client_name">
+                                        <h4>Sayın @Accessor?.HttpContext?.Session.GetString("KullaniciAdi")</h4>
+                                        <h4>Aracınızın Plakası: @randevu.Araba.Plaka</h4>
+                                        <h4>Araç Arıza: @randevu.Aciklama</h4>
+                                        <h4>Randevu Durumu: @randevu.OnayDurumu</h4>
+                                        <h6 class="mt-4">RANDEVU TARİHİ: @randevu.RandevuTarihi.ToString("dd MMM yyyy HH:mm")</h6>
+                                    </div>
+                                </div>
+                                @if(@randevu.OnayDurumu=="Onaylandı"){
+                                <form method="post" asp-action="RandevuIptal" asp-controller="Profil" onsubmit="return confirm('Bu randevuyu iptal etmek istediğinize emin misiniz?');">
+                                    <input type="hidden" name="randevuID" value="@randevu.randevuID" />
+                                    <button type="submit" class="btn btn-danger mt-3">
+                                        <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff;"></i>
+                                        Randevuyu İptal Et</button>
+                                </form>
+                                        }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</section>
